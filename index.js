@@ -27,14 +27,24 @@ async function run() {
             const items = await cursor.toArray();
             res.send(items);
         })
-        
+
         app.get('/limitItem', async (req, res) => {
             const query = {};
             const cursor = itemsCollection.find(query).limit(6);
             const items = await cursor.toArray();
             res.send(items);
         })
-        
+
+        // Delete
+        app.delete('/item/:id', async (req, res) => {
+
+            const id = req.params.id;
+            console.log(id);
+            const query = { _id: ObjectId(id) }
+            const result = await itemsCollection.deleteOne(query);
+            res.send(result);
+        })
+
     }
     finally {
 
