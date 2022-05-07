@@ -43,6 +43,12 @@ async function run() {
             res.send(item);
         })
 
+        app.post('/addItem', async(req,res)=>{
+            const newItem =req.body;
+            const result = itemsCollection.insertOne(newItem);
+            res.send(result);
+        })
+
         // Delete
         app.delete('/item/:id', async (req, res) => {
 
