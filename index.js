@@ -42,12 +42,20 @@ async function run() {
             const item = await itemsCollection.findOne(query);
             res.send(item);
         })
-
+        // My item
+        app.get('/myItem', async (req, res) => {
+            const email = req.query.email;
+            console.log(email)
+            const query = {email:email};
+            const cursor = itemsCollection.find(query);
+            const items = await cursor.toArray();
+            res.send(items);
+        })
         app.post('/addItem', async(req,res)=>{
             const newItem =req.body;
             const result = itemsCollection.insertOne(newItem);
             res.send(result);
-        })
+        }) 
 
         // Delete
         app.delete('/item/:id', async (req, res) => {
