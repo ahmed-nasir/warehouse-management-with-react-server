@@ -46,16 +46,34 @@ async function run() {
         app.get('/myItem', async (req, res) => {
             const email = req.query.email;
             console.log(email)
-            const query = {email:email};
+            const query = { email: email };
             const cursor = itemsCollection.find(query);
             const items = await cursor.toArray();
             res.send(items);
         })
-        app.post('/addItem', async(req,res)=>{
-            const newItem =req.body;
+        app.post('/addItem', async (req, res) => {
+            const newItem = req.body;
             const result = itemsCollection.insertOne(newItem);
             res.send(result);
-        }) 
+        })
+
+        // update quntity
+        app.put('/updateQuntity/:id', async (req, res) => {
+            const id = req.params
+            const data = req.body
+            const newQuantity = data.quantity
+            
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    quantity: newQuantity,
+                },
+            };
+            const result = await itemsCollection.updateOne(filter,updateDoc,options);
+            res.send(result)
+
+        })
 
         // Delete
         app.delete('/item/:id', async (req, res) => {
