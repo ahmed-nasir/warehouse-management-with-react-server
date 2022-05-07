@@ -35,6 +35,14 @@ async function run() {
             res.send(items);
         })
 
+        // single item
+        app.get('/limitItem/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const item = await itemsCollection.findOne(query);
+            res.send(item);
+        })
+
         // Delete
         app.delete('/item/:id', async (req, res) => {
 
